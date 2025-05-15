@@ -27,10 +27,12 @@ class Program
         int classChoice;
         bool validChoice = false;
 
+        //Här gör det att du kan inte skriva fel, det måste va i mellan av 1 och 3
         do
         {
             Console.Write("Enter the number of your choice (1, 2, or 3): ");
             string input = Console.ReadLine();
+
 
             // TryParse ska returna false även om det är inte en nummer.
             if (int.TryParse(input, out classChoice) && (classChoice >= 1 && classChoice <= 3))
@@ -42,7 +44,7 @@ class Program
                 Console.WriteLine("Invalid input! Please enter a number between 1 and 3.");
             }
 
-    } while (!validChoice);
+        } while (!validChoice);
 
         // Variabler för spelaren
         int playerHP = 100;
