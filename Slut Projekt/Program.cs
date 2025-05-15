@@ -23,8 +23,26 @@ class Program
         Console.WriteLine("1: Knight (High Defense)");
         Console.WriteLine("2: Mage (High Attack)");
         Console.WriteLine("3: Archer (Balanced)");
-        Console.Write("Enter the number of your choice: ");
-        int classChoice = int.Parse(Console.ReadLine());
+
+        int classChoice;
+        bool validChoice = false;
+
+        do
+        {
+            Console.Write("Enter the number of your choice (1, 2, or 3): ");
+            string input = Console.ReadLine();
+
+            // TryParse ska returna false även om det är inte en nummer.
+            if (int.TryParse(input, out classChoice) && (classChoice >= 1 && classChoice <= 3))
+            {
+                validChoice = true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input! Please enter a number between 1 and 3.");
+            }
+
+    } while (!validChoice);
 
         // Variabler för spelaren
         int playerHP = 100;
@@ -64,7 +82,7 @@ class Program
         // 
         Enemy enemy = CreateRandomEnemy();
 
-        Console.WriteLine($"\n⚔️ A wild {enemy.Name} appears! ⚔️");
+        Console.WriteLine($"\n A wild {enemy.Name} appears! ");
 
         // Fight Loop
         while (playerHP > 0 && enemy.HP > 0)
@@ -79,7 +97,7 @@ class Program
 
             if (enemy.HP <= 0)
             {
-                Console.WriteLine($"\n🏆 You defeated the {enemy.Name}! Victory!");
+                Console.WriteLine($"\n You defeated the {enemy.Name}! Victory!");
                 break;
             }
 
@@ -92,7 +110,7 @@ class Program
 
             if (playerHP <= 0)
             {
-                Console.WriteLine($"\n💀 You have been defeated by the {enemy.Name}...");
+                Console.WriteLine($"\n You have been defeated by the {enemy.Name}...");
                 break;
             }
         }
@@ -117,6 +135,7 @@ class Program
     }
 }
 
+
     // Enemy klass
     class Enemy
     {
@@ -133,4 +152,3 @@ class Program
             Defense = defense;
         }
     }
-
