@@ -1,6 +1,14 @@
-﻿Console.WriteLine("Hello and welcome to my Arena.. I the King, present you with 3 classes which you can use..");
+﻿//-----------------------------------------------------//
+
+Console.WriteLine("Hello and welcome to my Arena.. I the King, present you with 3 classes which you can use..");
 Console.WriteLine("Press enter to continue:");
 Console.ReadLine();
+
+//-----------------------------------------------------//
+
+
+
+
 
 //-----------------------------------------------------//
 //Här koden gör så att spelaren måste skriva ett namn. Om spelaren bara trycker Enter utan att skriva något –
@@ -19,6 +27,7 @@ do
     }
 
 } while (string.IsNullOrWhiteSpace(playerName));
+
 //-----------------------------------------------------//
 
 
@@ -33,6 +42,7 @@ Console.WriteLine("\nChoose your class, gladiator, you have three options:");
 Console.WriteLine("1: Knight (High Defense)");
 Console.WriteLine("2: Mage (High Attack)");
 Console.WriteLine("3: Archer (Balanced)");
+
 //-----------------------------------------------------//
 
 
@@ -64,9 +74,13 @@ do
 
 
 } while (!validChoice);
+
 //-----------------------------------------------------//
 
 //-----------------------------------------------------//
+//Det här delen av koden tar spelarens val och sätter rätt klassnamn och stats för attack och försvar, så att spelet vet..
+//..hur stark och tålig spelaren är beroende på vilken klass som valdes. Om valet inte är giltigt får spelaren en standardklass.
+
 // Variabler för spelaren
 int playerHP = 100;
 int playerAttack = 0;
@@ -100,29 +114,46 @@ else
     playerDefense = 10;
 }
 
+//-----------------------------------------------------//
+
+//-----------------------------------------------------//
+//Här kommer det lite svårt..
+//Den här koden skriver först ut en rad där den visar spelarens namn och klass, till exempel "Micke the Knight enters the battlefield!".
+
+
 Console.WriteLine($"\n{playerName} the {playerClass} enters the battlefield!");
 
-// 
+
 Enemy enemy = CreateRandomEnemy();
 
 Console.WriteLine($"\n A wild {enemy.Name} appears! ");
+//Sedan skapas en slumpmässig fiende med metoden CreateRandomEnemy(). Efter det skrivs det ut att en vild fiende har dykt upp, till exempel "A wild Goblin appears!".
 
-// Fight Loop
+// Sedan börjar en Fight loop som fortsätter så länge både spelaren och fienden har liv kvar. Först är det spelarens tur, där spelet skriver ut att det är spelarens tur.
 while (playerHP > 0 && enemy.HP > 0)
 {
     // Spelarens turn
     Console.WriteLine($"\n{playerName}'s Turn:");
     int damageDealt = playerAttack - enemy.Defense;
-    damageDealt = Math.Max(0, damageDealt); // Ingen negativ damage kan ske
+    damageDealt = Math.Max(0, damageDealt);
+    //Skadan som spelaren gör beräknas genom att ta spelarens attack minus fiendens försvar..
+    //..och om resultatet blir negativt sätts skadan till 0 eftersom man inte kan göra negativ skada.
+
 
     enemy.HP -= damageDealt;
     Console.WriteLine($"You deal {damageDealt} damage to {enemy.Name}! (Enemy HP: {enemy.HP})");
+
+    //Den här skadan dras sedan av från fiendens liv. Min spel skriver ut hur mycket skada spelaren gjorde och hur mycket liv fienden har kvar.
 
     if (enemy.HP <= 0)
     {
         Console.WriteLine($"\n You defeated the {enemy.Name}! Victory!");
         break;
     }
+    //Om fiendens liv blir 0 eller mindre betyder det att fienden är besegrad, och spelet skriver ut att spelaren har vunnit mot en enemy, och loopen avslutas med break.
+    //-----------------------------------------------------//
+
+
 
     // Enemies turn att köra
     Console.WriteLine($"\n{enemy.Name}'s Turn:");
@@ -131,16 +162,27 @@ while (playerHP > 0 && enemy.HP > 0)
     playerHP -= damageTaken;
     Console.WriteLine($"{enemy.Name} deals {damageTaken} damage to you! (Your HP: {playerHP})");
 
+    //Fienden attackerar och skadan räknas ut som fiendens attack minus spelarens försvar, men skadan kan inte bli mindre än noll. 
+    //Den dras av från spelarens liv och spelet visar hur mycket skada du fått och hur mycket liv som är kvar.
+
     if (playerHP <= 0)
     {
         Console.WriteLine($"\n You have been defeated by the {enemy.Name}...");
         break;
     }
 }
+    //Om ditt liv når noll eller mindre, förlorar du och spelet säger att du förlorade, sedan avslutas fighten.
+
+
+//-----------------------------------------------------//
 
 Console.WriteLine("\nGame Over. Thanks for playing!");
 
-// Metod att skapa en random enemy-
+
+//-----------------------------------------------------//
+// Den här metoden skapar en lista med olika fiender, där varje fiende har ett namn och olika värden för liv, attack och försvar.
+//Sedan skapar den ett slumpmässigt tal som används för att välja en av enemy i listan. Metoden returnerar sedan den valda fienden..
+//..alltså en slumpmässig enemy från listan, som används i spelet.
 Enemy CreateRandomEnemy()
 {
     List<Enemy> enemies = new List<Enemy>()
@@ -156,20 +198,36 @@ Enemy CreateRandomEnemy()
     return enemies[index];
 }
 
+//-----------------------------------------------------//
 
-// Enemy klass
+
+//-----------------------------------------------------//
+//I det här sista delen gäller det att denskapar en klass som heter Enemy..
+//..alltså en mall för fiender i spelet. Klassen har fyra egenskaper:
+//Name (namnet på enemy), 
+//HP (hur mycket liv enemy har), 
+//Attack (hur mycket skada enemy kan göra) och..
+//Defense (hur mycket enemy kan försvara sig).
+
+//metoden med samma namn som klassen, används för att skapa nya enemy objects med specifika värden för..
+//..namn, liv, attack och försvar när en ny fiende skapas. 
+//Det gör att varje fiende kan ha olika styrkor och egenskaper.
 class Enemy
-    {
-        public string Name;
-        public int HP;
-        public int Attack;
-        public int Defense;
+{
+    public string Name;
+    public int HP;
+    public int Attack;
+    public int Defense;
 
-        public Enemy(string name, int hp, int attack, int defense)
-        {
-            Name = name;
-            HP = hp;
-            Attack = attack;
-            Defense = defense;
-        }
+    public Enemy(string name, int hp, int attack, int defense)
+    {
+        Name = name;
+        HP = hp;
+        Attack = attack;
+        Defense = defense;
     }
+}
+
+//-----------------------------------------------------//
+
+//Slut..
