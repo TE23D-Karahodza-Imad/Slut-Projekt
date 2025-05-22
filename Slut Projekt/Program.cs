@@ -2,6 +2,10 @@
 Console.WriteLine("Press enter to continue:");
 Console.ReadLine();
 
+//-----------------------------------------------------//
+//Här koden gör så att spelaren måste skriva ett namn. Om spelaren bara trycker Enter utan att skriva något –
+//då säger spelet: "You must enter a name, brave warrior!" Och frågar igen.
+//Det fortsätter så, om och om igen, tills spelaren faktiskt har skrivit ett namn.
 
 string playerName = "";
 do
@@ -15,9 +19,12 @@ do
     }
 
 } while (string.IsNullOrWhiteSpace(playerName));
+//-----------------------------------------------------//
 
-// Här ska du välja en klass, det finns 3 val, jag har inte gjort att man kan göra fel, eller att de kommer upp när man skriver 
-//fel nummer eller ett ord, ska göra det senare.
+
+//-----------------------------------------------------//
+// Här ska du välja en klass, det finns 3 val.
+
 Console.WriteLine("\nYour name sounds interesting.. never heard of it.");
 Console.WriteLine("Press enter to continue:");
 Console.ReadLine();
@@ -26,11 +33,18 @@ Console.WriteLine("\nChoose your class, gladiator, you have three options:");
 Console.WriteLine("1: Knight (High Defense)");
 Console.WriteLine("2: Mage (High Attack)");
 Console.WriteLine("3: Archer (Balanced)");
+//-----------------------------------------------------//
+
+
+//-----------------------------------------------------//
+//Den här koden är kopplad till mina 3 val.Om spelaren skriver något annat som bokstäver, tomt, eller fel nummer får de ett..
+//..felmeddelande och får försöka igen.
+//TryParse försöker göra om text till en siffra, och vi kollar att den är mellan 1 och 3.
+//Loopen fortsätter tills spelaren skrivit ett giltigt nummer.
 
 int classChoice;
 bool validChoice = false;
 
-//Här gör det att du kan inte skriva fel, det måste va i mellan av 1 och 3
 do
 {
     Console.Write("Enter the number of your choice (1, 2, or 3): ");
@@ -47,8 +61,12 @@ do
         Console.WriteLine("Invalid input! Please enter a number between 1 and 3.");
     }
 
-} while (!validChoice);
 
+
+} while (!validChoice);
+//-----------------------------------------------------//
+
+//-----------------------------------------------------//
 // Variabler för spelaren
 int playerHP = 100;
 int playerAttack = 0;
