@@ -3,10 +3,27 @@ using System.Collections.Generic;
 
 class Program
 {
+    //-----------------------------------------------------//
+    //Det här är min random damage metod, som måste va placeras innan Main() (chatgpt sa det). Och det funkar.
+    static int CalculateRandomDamage(int baseAttack)
+    {
+        Random rand = new Random();
+
+        // Det här är en range mellan 80% och 120% for baseAttack
+        int minDamage = (int)(baseAttack * 0.8);
+        int maxDamage = (int)(baseAttack * 1.2);
+
+        return rand.Next(minDamage, maxDamage + 1); // +1 max damage det här är.
+    }
+
+    //-----------------------------------------------------//
+
+
     static void Main()
     {
 
         //-----------------------------------------------------//
+        System.Console.WriteLine("Hi ");
 
         Console.WriteLine("Hello and welcome to my Arena.. I the King, present you with 3 classes which you can use..");
         Console.WriteLine("Press enter to continue:");
@@ -138,14 +155,18 @@ class Program
         Console.ReadLine();
         //Sedan skapas en slumpmässig fiende med metoden CreateRandomEnemy(). Efter det skrivs det ut att en vild fiende har dykt upp, till exempel "A wild Goblin appears!".
 
+         //-----------------------------------------------------//
         // Sedan börjar en Fight loop som fortsätter så länge både spelaren och fienden har liv kvar. Först är det spelarens tur, där spelet skriver ut att det är spelarens tur.
         while (playerHP > 0 && enemy.HP > 0)
         {
             // Spelarens turn
+            //Detta delen handlar om att man gör en slumptal när du (spelare) attackerar.
             Console.WriteLine($"\n{playerName}'s Turn:");
             Console.ReadLine();
-            int damageDealt = playerAttack - enemy.Defense;
+            int rawPlayerDamage = CalculateRandomDamage(playerAttack); //Kalkulerar random damage för oss.
+            int damageDealt = rawPlayerDamage - enemy.Defense;
             damageDealt = Math.Max(0, damageDealt);
+
             //Skadan som spelaren gör beräknas genom att ta spelarens attack minus fiendens försvar..
             //..och om resultatet blir negativt sätts skadan till 0 eftersom man inte kan göra negativ skada.
 
@@ -161,18 +182,22 @@ class Program
                 Console.WriteLine($"\nYou defeated the {enemy.Name}! Victory!");
                 break;
             }
-            //Om fiendens liv blir 0 eller mindre betyder det att fienden är besegrad, och spelet skriver ut att spelaren har vunnit mot en enemy, och loopen avslutas med break.
+            //Om enemy liv blir 0 eller mindre betyder det att enemy är besegrad, och spelet skriver ut att spelaren har vunnit mot en enemy, och loopen avslutas med break.
             //-----------------------------------------------------//
 
 
 
             // Enemies turn att köra
+            //Detta delen handlar om att man gör en slumptal när du (spelare) skyddar (blir attackerad).
+
             Console.WriteLine($"\n{enemy.Name}'s Turn:");
             Console.ReadLine();
-            int damageTaken = enemy.Attack - playerDefense;
+            int rawEnemyDamage = CalculateRandomDamage(enemy.Attack); //Kalkulerar och ger en slumptal.
+            int damageTaken = rawEnemyDamage - playerDefense;
             damageTaken = Math.Max(0, damageTaken);
             playerHP -= damageTaken;
             Console.WriteLine($"{enemy.Name} deals {damageTaken} damage to you! (Your HP: {playerHP})");
+
             Console.ReadLine();
 
 
@@ -193,7 +218,7 @@ class Program
 
         Console.WriteLine("\nYou fall to your knees and are about to be killed.. but then.."); //Här kan jag fortsätta med min spel..
         Console.ReadLine(); //..och utveckla den till t.ex: You are healed by a magician that cast a spel on you, then you go on to defeat the (enemy)..
-        
+
 
 
         //-----------------------------------------------------//
@@ -247,6 +272,8 @@ class Program
     }
 
     //-----------------------------------------------------//
+
+    
 
     //Slut..
 
