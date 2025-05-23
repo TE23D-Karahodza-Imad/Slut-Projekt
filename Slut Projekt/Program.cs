@@ -23,8 +23,8 @@ class Program
     {
 
         //-----------------------------------------------------//
-        System.Console.WriteLine("Hi ");
-
+        //Här innan du går till Kungen och Arenan, kan jag göra att det finns choice, om du vill bara kolla, or participate.. typ choices du kan göra, för att göra spelet roligare.
+        
         Console.WriteLine("Hello and welcome to my Arena.. I the King, present you with 3 classes which you can use..");
         Console.WriteLine("Press enter to continue:");
         Console.ReadLine();
@@ -117,26 +117,19 @@ class Program
         {
             playerClass = "Knight";
             playerAttack = 30;
-            playerDefense = 15;
+            playerDefense = 10;
         }
         else if (classChoice == 2)
         {
             playerClass = "Mage";
-            playerAttack = 40;
+            playerAttack = 17;
             playerDefense = 5;
         }
         else if (classChoice == 3)
         {
             playerClass = "Archer";
-            playerAttack = 55;
-            playerDefense = 10;
-        }
-        else
-        {
-            Console.WriteLine("Invalid choice! Defaulting to Archer.");
-            playerClass = "Archer";
-            playerAttack = 55;
-            playerDefense = 10;
+            playerAttack = 25;
+            playerDefense = 7;
         }
 
         //-----------------------------------------------------//
@@ -180,6 +173,9 @@ class Program
             if (enemy.HP <= 0)
             {
                 Console.WriteLine($"\nYou defeated the {enemy.Name}! Victory!");
+                Console.WriteLine("Press enter to continue:");
+                Console.ReadLine();
+
                 break;
             }
             //Om enemy liv blir 0 eller mindre betyder det att enemy är besegrad, och spelet skriver ut att spelaren har vunnit mot en enemy, och loopen avslutas med break.
@@ -206,6 +202,9 @@ class Program
             if (playerHP <= 0)
             {
                 Console.WriteLine($"\nYou have been defeated by the {enemy.Name}...");
+                Console.WriteLine("Press enter to continue:");
+                Console.ReadLine();
+
                 break;
 
             }
@@ -215,8 +214,14 @@ class Program
 
         //-----------------------------------------------------//
 
-        Console.WriteLine("\nYou fall to your knees and are about to be killed.. but then.."); //Här kan jag fortsätta med min spel..
-        Console.ReadLine(); //..och utveckla den till t.ex: You are healed by a magician that cast a spel on you, then you go on to defeat the (enemy)..
+        Console.WriteLine("\nAfter the result, you are then presented with a heal potion..");
+        System.Console.WriteLine("-----To be continued..-----");
+        Console.ReadLine();
+        //Här kan jag fortsätta med min spel..
+        //..och utveckla den till t.ex: You are healed by a magician that cast a spel on you, then you go on to defeat the other enemy..
+        //Eller om du vann så kan du heala din opponent, bli vänner efter, ha paths, som du väljer, om ni ska gå till aventyr tillsammans, eller du ska backstaba honom.
+        //Du väljer.. jag kan utveckla den så där.  
+
 
 
 
