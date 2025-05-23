@@ -155,7 +155,7 @@ class Program
         Console.ReadLine();
         //Sedan skapas en slumpmässig fiende med metoden CreateRandomEnemy(). Efter det skrivs det ut att en vild fiende har dykt upp, till exempel "A wild Goblin appears!".
 
-         //-----------------------------------------------------//
+        //-----------------------------------------------------//
         // Sedan börjar en Fight loop som fortsätter så länge både spelaren och fienden har liv kvar. Först är det spelarens tur, där spelet skriver ut att det är spelarens tur.
         while (playerHP > 0 && enemy.HP > 0)
         {
@@ -164,8 +164,8 @@ class Program
             Console.WriteLine($"\n{playerName}'s Turn:");
             Console.ReadLine();
             int rawPlayerDamage = CalculateRandomDamage(playerAttack); //Kalkulerar random damage för oss.
-            int damageDealt = rawPlayerDamage - enemy.Defense;
-            damageDealt = Math.Max(0, damageDealt);
+            int damageDealt = CalculateDamage(playerAttack, enemy.Defense); //Det här delen var lite annorlunda förrut, men för att jag addade critical hit, nu ändrade jag den så.
+
 
             //Skadan som spelaren gör beräknas genom att ta spelarens attack minus fiendens försvar..
             //..och om resultatet blir negativt sätts skadan till 0 eftersom man inte kan göra negativ skada.
@@ -193,8 +193,7 @@ class Program
             Console.WriteLine($"\n{enemy.Name}'s Turn:");
             Console.ReadLine();
             int rawEnemyDamage = CalculateRandomDamage(enemy.Attack); //Kalkulerar och ger en slumptal.
-            int damageTaken = rawEnemyDamage - playerDefense;
-            damageTaken = Math.Max(0, damageTaken);
+            int damageTaken = CalculateDamage(enemy.Attack, playerDefense); //Det här delen var lite annorlunda förrut, men för att jag addade critical hit, nu ändrade jag den så.
             playerHP -= damageTaken;
             Console.WriteLine($"{enemy.Name} deals {damageTaken} damage to you! (Your HP: {playerHP})");
 
@@ -239,6 +238,32 @@ class Program
             int index = rnd.Next(enemies.Count);
             return enemies[index];
         }
+
+        //-----------------------------------------------------//
+
+
+        //-----------------------------------------------------//
+        //Det här delen av koden är den sista improvement jag har gjort, som är critical damage.
+        //Jag hade roligt koda den för att jag tänkte att det var lite svårt, och i det här delen fick jag chatgpt hjälpa mig.
+
+        int CalculateDamage(int attacker, int defender)
+        {
+            Random rnd = new Random();
+            int baseDamage = rnd.Next(attacker - 5, attacker + 6); // Addar randomness +5
+            bool isCritical = rnd.NextDouble() < 0.10; // 10% chans för att göra en critical hit.
+
+            if (isCritical)
+            {
+                Console.WriteLine("Critical Hit!");
+                baseDamage *= 2;
+            }
+
+            int finalDamage = baseDamage - defender;
+            return Math.Max(0, finalDamage);
+        }
+
+        //-----------------------------------------------------//
+
     }
 }
     //-----------------------------------------------------//
