@@ -20,7 +20,6 @@ class Program
             return;
         }
 
-
         int length = password.Length;
 
         bool hasLower = password.Any(char.IsLower);
@@ -32,21 +31,40 @@ class Program
         if (hasLower) charsetSize += 26;
         if (hasUpper) charsetSize += 26;
         if (hasDigit) charsetSize += 10;
-        if (hasSpecial) charsetSize += 33; // ungefärlig mängd vanliga specialtecken
+        if (hasSpecial) charsetSize += 33;
 
         if (charsetSize == 0)
         {
             Console.WriteLine("⚠️ Kunde inte analysera teckenuppsättningen.");
             return;
         }
+
         string hashHex = ComputeSha256Hex(password);
         BigInteger combinations = BigInteger.Pow(new BigInteger(charsetSize), length);
-
-        // Antag en hastighet (du kan ändra för att jämföra scenarier)
-        BigInteger guessesPerSecond = new BigInteger(1_000_000_000); // 1 miljard gissningar/sek
-
+        BigInteger guessesPerSecond = new BigInteger(1_000_000_000);
         BigInteger avgSeconds = combinations / (2 * guessesPerSecond);
         string timeReadable = FormatSeconds(avgSeconds);
+
+        // NY KOD: Styrkebedömning
+        int strengthScore = 0;
+        if (length >= 8) strengthScore++;
+        if (length >= 12) strengthScore++;
+        if (hasUpper && hasLower) strengthScore++;
+        if (hasDigit) strengthScore++;
+        if (hasSpecial) strengthScore++;
+
+        // NY KOD: Mönstervarning
+        string[] commonPatterns = { "password", "123456", "qwerty", "abc", "admin", "welcome", "login" };
+        bool hasCommonPattern = commonPatterns.Any(p => password.ToLower().Contains(p));
+
+        string strengthLabel;
+        if (strengthScore <= 2)
+            strengthLabel = "⚠️  Svagt";
+        else if (strengthScore <= 3)
+            strengthLabel = "🟡 Medel";
+        else
+            strengthLabel = "✅ Starkt";
+
         Console.WriteLine("\n--- Resultat ---");
         Console.WriteLine($"Längd: {length}");
         Console.WriteLine($"Teckentyper: " +
@@ -54,16 +72,22 @@ class Program
                           $"{(hasUpper ? "A-Z " : "")}" +
                           $"{(hasDigit ? "0-9 " : "")}" +
                           $"{(hasSpecial ? "special " : "")}");
-
         Console.WriteLine($"Uppskattad teckenmängd: {charsetSize}");
         Console.WriteLine($"SHA-256 hash: {hashHex}");
         Console.WriteLine($"Möjliga kombinationer: {ToScientific(combinations)}");
         Console.WriteLine($"Antagen hastighet: {guessesPerSecond:n0} gissningar/sek");
         Console.WriteLine($"Uppskattad tid (i snitt): {timeReadable}");
 
+        // NY KOD: Skriver ut styrka och mönstervarning
+        Console.WriteLine($"Lösenordsstyrka: {strengthLabel}");
+
+        if (hasCommonPattern)
+            Console.WriteLine("⚠️  Varning: Lösenordet innehåller ett vanligt mönster och är lättare att gissa.");
+
         Console.WriteLine("\nTryck valfri tangent för att avsluta...");
         Console.ReadKey();
     }
+
     static string ComputeSha256Hex(string input)
     {
         using var sha = SHA256.Create();
